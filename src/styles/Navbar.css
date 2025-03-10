@@ -1,0 +1,33 @@
+/* Override Bootstrap's bg-primary */
+.bg-primary {
+    background-color: #263238 !important;
+  }
+  
+  /* Change navbar text color */
+  .navbar-dark .navbar-nav .nav-link {
+    color: #ffc727 !important;
+  }
+  
+  /* Change navbar brand color */
+  .navbar-dark .navbar-brand {
+    color: #ffc727 !important;
+  }
+  
+  /* Change active and hover link color */
+  .navbar-dark .navbar-nav .nav-link:hover,
+  .navbar-dark .navbar-nav .nav-link.active {
+    color: #dbdbdb !important;
+  }
+  
+  /* Style the login button */
+  .btn-light {
+    background-color: #ffc727 !important;
+    color: #263238 !important;
+    border: none;
+  }
+  
+  .btn-light:hover {
+    background-color: #ffd255 !important;
+    color: #263238 !important;
+  }
+  
