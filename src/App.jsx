@@ -1,5 +1,16 @@
-import React from 'react'
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import AppRoutes from "./routes";
+import { AuthProvider } from "./context/AuthContext";
 
-export default function App(){
-  return <h1>Welcome to Ticketing System</h1>
-}
+const App = () => {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
+    </BrowserRouter>
+  );
+};
+
+export default App;

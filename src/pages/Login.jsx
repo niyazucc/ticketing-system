@@ -1,18 +1,27 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { useAuth } from '../context/AuthContext';
+
 
 export default function Login() {
+  const { login } = useAuth(); // ✅ Use login function from context
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // ✅ Show error below input
 
+  const users = [
+    { username: "user@gmail.com", password: "user", role: "user" },
+    { username: "admin@gmail.com", password: "admin", role: "admin" }
+  ];
   const handleLogin = (e) => {
     e.preventDefault();
-    if (username && password) {
-      localStorage.setItem("isAuthenticated", "true");
-      navigate("/");
+    const user = users.find((u) => u.username === username && u.password === password);
+
+    if (user) {
+      login(user); // ✅ Login & redirect automatically
     } else {
-      alert("Please enter username and password.");
+      setError("Invalid username or password."); // ✅ Show error
     }
   };
 
@@ -33,11 +42,11 @@ export default function Login() {
               Don’t have an account yet? <Link to="/register">Sign up here</Link>
             </p>
             {/* Social Login Buttons */}
-            <button className="btn btn-light w-100 mb-2"><i className="bi bi-google"></i> Log in with Google</button>
-            <button className="btn btn-light w-100 mb-3"><i className="bi bi-apple"></i> Log in with Apple</button>
+            <button className="btn btn-outline-dark w-100 mb-2"><i className="bi bi-google"></i> Log in with Google</button>
+            <button className="btn btn-outline-dark w-100 mb-3"><i className="bi bi-apple"></i> Log in with Apple</button>
 
             <p className="text-center text-muted">or</p>
-            
+
 
             <form onSubmit={handleLogin}>
               <div className="mb-3">
@@ -50,6 +59,7 @@ export default function Login() {
                   onChange={(e) => setUsername(e.target.value)}
                   required
                 />
+                {error && <small className="text-danger">{error}</small>}
               </div>
 
               <div className="mb-3">
@@ -72,10 +82,8 @@ export default function Login() {
                 <Link to="/forgot-password" className="text-decoration-none">Forgot password?</Link>
               </div>
 
-              <button type="submit" className="btn btn-primary w-100 mt-3">Sign in to your account</button>
+              <button type="submit" className="btn btn-light w-100 mt-3">Sign in to your account</button>
             </form>
-
-            
           </div>
         </div>
       </div>

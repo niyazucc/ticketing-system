@@ -31,3 +31,7 @@
     color: #263238 !important;
   }
   
+  .btn-outline-dark:hover {
+    background-color: #263238 !important;
+    border-color: #263238 !important;
+  }

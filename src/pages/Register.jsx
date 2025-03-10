@@ -30,9 +30,9 @@ export default function Register() {
                         <form onSubmit={handleRegister} className="mt-3">
                             <div className="mb-3">
                                 <label className="form-label">Your Email</label>
-                                <input 
-                                    type="email" 
-                                    className="form-control" 
+                                <input
+                                    type="email"
+                                    className="form-control"
                                     placeholder="name@company.com"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -42,9 +42,9 @@ export default function Register() {
 
                             <div className="mb-3">
                                 <label className="form-label">Full Name</label>
-                                <input 
-                                    type="text" 
-                                    className="form-control" 
+                                <input
+                                    type="text"
+                                    className="form-control"
                                     placeholder="e.g. Bonnie Green"
                                     value={fullName}
                                     onChange={(e) => setFullName(e.target.value)}
@@ -54,7 +54,7 @@ export default function Register() {
 
                             <div className="mb-3">
                                 <label className="form-label">Country</label>
-                                <select 
+                                <select
                                     className="form-select"
                                     value={country}
                                     onChange={(e) => setCountry(e.target.value)}
@@ -71,9 +71,9 @@ export default function Register() {
 
                             <div className="mb-3">
                                 <label className="form-label">Password</label>
-                                <input 
-                                    type="password" 
-                                    className="form-control" 
+                                <input
+                                    type="password"
+                                    className="form-control"
                                     placeholder="••••••••"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -88,14 +88,13 @@ export default function Register() {
                                 </label>
                             </div>
 
-                            <button type="submit" className="btn btn-primary w-100">Create Account</button>
+                            <button type="submit" className="btn btn-light w-100">Create Account</button>
                         </form>
 
                         <p className="text-center mt-3">or</p>
 
-                        <button className="btn btn-outline-dark w-100 mb-2">Sign up with Google</button>
-                        <button className="btn btn-outline-dark w-100">Sign up with Apple</button>
-
+                        <button className="btn btn-outline-dark w-100 mb-2"><i className="bi bi-google"></i> Log in with Google</button>
+                        <button className="btn btn-outline-dark w-100 mb-3"><i className="bi bi-apple"></i> Log in with Apple</button>
                         <p className="text-muted mt-3 text-center">
                             By signing up, you agree to our <a href="/terms">Terms</a> and <a href="/privacy">Privacy Policy</a>.
                         </p>
