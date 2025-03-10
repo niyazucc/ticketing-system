@@ -28,13 +28,16 @@ export default function Login() {
 
           {/* Right Side - Login Form */}
           <div className="col border rounded m-3 p-4">
-            <h2 className="text-center">Welcome back</h2>
-
+            <h2 className="text-left">Welcome back</h2>
+            <p className="text-left ">
+              Don’t have an account yet? <Link to="/register">Sign up here</Link>
+            </p>
             {/* Social Login Buttons */}
-            <button className="btn btn-outline-dark w-100 mb-2">Log in with Google</button>
-            <button className="btn btn-outline-dark w-100 mb-3">Log in with Apple</button>
+            <button className="btn btn-light w-100 mb-2"><i className="bi bi-google"></i> Log in with Google</button>
+            <button className="btn btn-light w-100 mb-3"><i className="bi bi-apple"></i> Log in with Apple</button>
 
             <p className="text-center text-muted">or</p>
+            
 
             <form onSubmit={handleLogin}>
               <div className="mb-3">
@@ -72,9 +75,7 @@ export default function Login() {
               <button type="submit" className="btn btn-primary w-100 mt-3">Sign in to your account</button>
             </form>
 
-            <p className="text-center mt-3">
-              Don’t have an account yet? <Link to="/register">Sign up here</Link>
-            </p>
+            
           </div>
         </div>
       </div>
