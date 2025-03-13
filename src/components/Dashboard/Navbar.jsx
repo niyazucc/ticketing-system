@@ -1,44 +1,81 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "../../styles/Navbar.css"; // Import the CSS file
+import { useAuth } from "../../context/AuthContext"; // Import the useAuth hook
+import { useLocation, Link } from "react-router-dom";
 
 export default function Navbar() {
+ 
+  const location = useLocation();
+  const {user , logout} = useAuth(); // Import the useAuth hook
+
   return (
-    <div className="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
-      <div className="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-        <Link to="/" className="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-          <span className="fs-5 d-none d-sm-inline">Menu</span>
-        </Link>
-        <ul className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-          <li className="nav-item">
-            <Link to="/" className="nav-link align-middle px-0">
-              <i className="fs-4 bi-house"></i> <span className="ms-1 d-none d-sm-inline">Home</span>
-            </Link>
-          </li>
-          <li>
-            <Link to="/dashboard" className="nav-link px-0 align-middle">
-              <i className="fs-4 bi-speedometer2"></i> <span className="ms-1 d-none d-sm-inline">Dashboard</span>
-            </Link>
-          </li>
-          <li>
-            <Link to="/orders" className="nav-link px-0 align-middle">
-              <i className="fs-4 bi-table"></i> <span className="ms-1 d-none d-sm-inline">Orders</span>
-            </Link>
-          </li>
-        </ul>
-        <hr />
-        <div className="dropdown pb-4">
-          <Link to="#" className="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://github.com/mdo.png" alt="User" width="30" height="30" className="rounded-circle" />
-            <span className="d-none d-sm-inline mx-1">User</span>
-          </Link>
-          <ul className="dropdown-menu dropdown-menu-dark text-small shadow">
-            <li><Link className="dropdown-item" to="#">Profile</Link></li>
-            <li><hr className="dropdown-divider" /></li>
-            <li><Link className="dropdown-item" to="/logout">Sign out</Link></li>
-          </ul>
+    <>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-primary py-3">
+        <div className="container">
+          <a className="navbar-brand fw-bold" href="/">
+            Ticketing System.
+          </a>
+
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav ms-auto">
+                <>
+                  
+                  <li className="nav-item">
+                    <div class="dropdown">
+                      <li>
+                        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i className="bi bi-person"></i> {user.username}
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" onClick={logout}>Logout</a></li>
+                          
+                        </ul>
+                      </li>
+
+                    </div>
+                  </li>
+                </>
+             
+            </ul>
+          </div>
         </div>
-      </div>
-    </div>
+      </nav>
+
+      <nav className="navbar navbar-expand-lg bg-primary py-2 navbar-dark">
+        <div className="container">
+          <div className="collapse navbar-collapse">
+            <ul className="navbar-nav">
+              <li className={`nav-item ${location.pathname === "/dashboard" ? "border-bottom border-white" : ""}`}>
+                <Link className="nav-link" to="/dashboard">
+                  <i className="bi bi-house"></i> Home
+                </Link>
+              </li>
+              <li className={`nav-item ${location.pathname === "" ? "border-bottom border-white" : ""}`}>
+                <Link className="nav-link" to="">
+                  <i className="bi bi-ticket-detailed"></i> My Tickets
+                </Link>
+              </li>
+              <li className={`nav-item ${location.pathname === "" ? "border-bottom border-white" : ""}`}>
+                <Link className="nav-link" to="">
+                  <i className="bi bi-person"></i> My Profile
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </>
   );
 }

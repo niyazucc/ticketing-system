@@ -3,8 +3,6 @@ import Navbar from '../components/Navbar';
 
 export default function Register() {
     const [email, setEmail] = useState("");
-    const [fullName, setFullName] = useState("");
-    const [country, setCountry] = useState("");
     const [password, setPassword] = useState("");
 
     const handleRegister = (e) => {
@@ -15,15 +13,15 @@ export default function Register() {
     return (
         <>
             <Navbar />
-            <div className="container mt-3">
+            <div className="container mt-5">
                 <div className="row">
                     {/* Left Side - Image */}
-                    <div className="col">
+                    <div className="col-sm-6 col-md">
                         <img className="img-fluid" src="images/signup.png" alt="Register" />
                     </div>
 
                     {/* Right Side - Form */}
-                    <div className="col border rounded m-3 p-4">
+                    <div className="col-sm-6 col-md border rounded m-3 p-4">
                         <h2>Create Your Account</h2>
                         <p>Start your journey now. Already have an account? <a href="/login">Login here</a>.</p>
 
@@ -40,34 +38,7 @@ export default function Register() {
                                 />
                             </div>
 
-                            <div className="mb-3">
-                                <label className="form-label">Full Name</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="e.g. Bonnie Green"
-                                    value={fullName}
-                                    onChange={(e) => setFullName(e.target.value)}
-                                    required
-                                />
-                            </div>
-
-                            <div className="mb-3">
-                                <label className="form-label">Country</label>
-                                <select
-                                    className="form-select"
-                                    value={country}
-                                    onChange={(e) => setCountry(e.target.value)}
-                                    required
-                                >
-                                    <option value="">Choose a country</option>
-                                    <option value="USA">United States</option>
-                                    <option value="UK">United Kingdom</option>
-                                    <option value="MY">Malaysia</option>
-                                    <option value="SG">Singapore</option>
-                                    {/* Add more countries */}
-                                </select>
-                            </div>
+                           
 
                             <div className="mb-3">
                                 <label className="form-label">Password</label>
@@ -81,10 +52,22 @@ export default function Register() {
                                 />
                             </div>
 
+                            <div className="mb-3">
+                                <label className="form-label">Re-enter Password</label>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    placeholder="••••••••"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+                            </div>
+
                             <div className="mb-3 form-check">
                                 <input type="checkbox" className="form-check-input" id="updatesCheck" />
                                 <label className="form-check-label" htmlFor="updatesCheck">
-                                    Email me about product updates and resources.
+                                    Email me about ticket updates and resources.
                                 </label>
                             </div>
 

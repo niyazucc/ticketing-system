@@ -6,6 +6,7 @@
   /* Change navbar text color */
   .navbar-dark .navbar-nav .nav-link {
     color: #ffc727 !important;
+    font-weight: 500;
   }
   
   /* Change navbar brand color */

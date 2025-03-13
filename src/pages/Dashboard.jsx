@@ -1,27 +1,23 @@
-import React, { useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import DashboardLayout from "../components/Dashboard/DashboardLayout";
+import React from 'react'
+import Navbar from '../components/Dashboard/Navbar';
+import SideNav from '../components/Dashboard/SideNav';
+import Content from '../components/Dashboard/Content';
 
-const Dashboard = () => {
-  const { user } = useAuth();
-  const { logout } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    // Redirect if user is not logged in
-    if (!user) {
-      navigate("/login");
-    }
-  }, [user, navigate]); // ✅ Only runs when `user` changes
-
+export default function Dashboard() {
   return (
-    <DashboardLayout>
-      <h1>Dashboard</h1>
-      {user ? <p>Welcome, {user.username}! Role: {user.role}</p> : <p>Redirecting...</p>}
-      <button className="btn btn-danger mt-3" onClick={logout}>Logout</button>
-    </DashboardLayout>
-  );
-};
-
-export default Dashboard;
+    <>
+      <Navbar />
+      <div className='container py-3'>
+      <div className='row'>
+        <div className='border border-rounded p-4 col-md-3'>
+          <SideNav />
+        </div>
+        <div className='border border-rounded p-4 col'>
+          <Content />
+        </div>
+      </div>
+      </div>
+      
+    </>
+  )
+}
