@@ -10,6 +10,7 @@
 
     export default function MapComponent() {
         const [selectedTicket, setSelectedTicket] = useState(null);
+
         return (
             <>
                 <Map mapboxAccessToken={MAPBOX_TOKEN}
@@ -39,9 +40,9 @@
                             closeOnClick={false}
                         >
                             <div>
-                                <h5>{selectedTicket.title}</h5>
-                                <p>{selectedTicket.description}</p>
-                                <p>{selectedTicket.status}</p>
+                                <p className='fw-medium fs-6 p-0 m-0'>{selectedTicket.title}</p>
+                                <p className='fw-normal p-0 m-0'>{selectedTicket.description}</p>
+                                <p className='fw-normal mb-0 mt-4'>Status: {selectedTicket.status}</p>
                             </div>
                         </Popup>
                     )}
