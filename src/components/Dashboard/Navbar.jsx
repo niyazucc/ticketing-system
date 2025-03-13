@@ -4,9 +4,9 @@ import { useAuth } from "../../context/AuthContext"; // Import the useAuth hook
 import { useLocation, Link } from "react-router-dom";
 
 export default function Navbar() {
- 
+
   const location = useLocation();
-  const {user , logout} = useAuth(); // Import the useAuth hook
+  const { user, logout } = useAuth(); // Import the useAuth hook
 
   return (
     <>
@@ -30,24 +30,24 @@ export default function Navbar() {
 
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
-                <>
-                  
-                  <li className="nav-item">
-                    <div class="dropdown">
-                      <li>
-                        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i className="bi bi-person"></i> {user.username}
-                        </button>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" onClick={logout}>Logout</a></li>
-                          
-                        </ul>
-                      </li>
+              <>
 
-                    </div>
-                  </li>
-                </>
-             
+                <li className="nav-item">
+                  <div class="dropdown">
+                    <li>
+                      <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i className="bi bi-person"></i> {user.username}
+                      </button>
+                      <ul class="dropdown-menu btn-light">
+                        <li><a class="dropdown-item btn-light" onClick={logout}><i className="bi bi-door-closed"></i> Logout</a></li>
+
+                      </ul>
+                    </li>
+
+                  </div>
+                </li>
+              </>
+
             </ul>
           </div>
         </div>
@@ -59,7 +59,7 @@ export default function Navbar() {
             <ul className="navbar-nav">
               <li className={`nav-item ${location.pathname === "/dashboard" ? "border-bottom border-white" : ""}`}>
                 <Link className="nav-link" to="/dashboard">
-                  <i className="bi bi-house"></i> Home
+                  <i className="bi bi-house"></i> Dashboard
                 </Link>
               </li>
               <li className={`nav-item ${location.pathname === "" ? "border-bottom border-white" : ""}`}>
