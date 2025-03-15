@@ -36,7 +36,7 @@ export default function Login() {
           </div>
 
           {/* Right Side - Login Form */}
-          <div className="col-sm-6 col-md border rounded m-3 p-4">
+          <div className="col-sm-6 col-md border shadow-sm rounded m-3 p-4">
             <h2 className="text-left">Welcome back</h2>
             <p className="text-left ">
               Don’t have an account yet? <Link to="/register">Sign up here</Link>

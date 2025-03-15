@@ -1,13 +1,23 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 const Unauthorized = () => {
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>Unauthorized Access</h1>
-      <p>You must be logged in to access this page.</p>
-      <Link to="/login">Go to Login</Link>
-    </div>
+    <>
+      <Navbar />
+      <div className="text-center mt-5">
+        <img src="/images/404.png" className="img-fluid w-25" alt="Unauthorized Access" />
+        <h2 className="mt-3 text-danger">Access Denied</h2>
+        <p className="text-muted">
+          You do not have permission to view this page. <br />
+          Please log in with an authorized account.
+        </p>
+        <div className="mt-3">
+          <Link to="/login" className="btn  bg-primary text-white">Go to Login</Link>
+        </div>
+      </div>
+    </>
   );
 };
 

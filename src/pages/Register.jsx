@@ -21,7 +21,7 @@ export default function Register() {
                     </div>
 
                     {/* Right Side - Form */}
-                    <div className="col-sm-6 col-md border rounded m-3 p-4">
+                    <div className="col-sm-6 col-md border shadow-sm rounded m-3 p-4">
                         <h2>Create Your Account</h2>
                         <p>Start your journey now. Already have an account? <a href="/login">Login here</a>.</p>
 
@@ -37,9 +37,6 @@ export default function Register() {
                                     required
                                 />
                             </div>
-
-                           
-
                             <div className="mb-3">
                                 <label className="form-label">Password</label>
                                 <input

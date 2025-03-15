@@ -6,6 +6,8 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Unauthorized from './pages/Unauthorized';
 import ProtectedRoute from './components/ProtectedRoute';
+import DashboardLayout from './layout/DashboardLayout';
+import Tickets from './pages/Tickets';
 
 const AppRoutes = () => {
     return (
@@ -16,7 +18,9 @@ const AppRoutes = () => {
         <Route path="/unauthorized" element={<Unauthorized />} />
       
         {/* Protected route */} 
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout><Dashboard /></DashboardLayout></ProtectedRoute>} />
+        <Route path="/tickets" element={<ProtectedRoute><DashboardLayout><Tickets /></DashboardLayout></ProtectedRoute>} />
+
       </Routes>
     );
   };

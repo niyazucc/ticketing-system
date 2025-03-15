@@ -27,7 +27,7 @@ export default function Home() {
 
                 <hr className='mt-5' />
                 <div className='text-center mt-5'>
-                    <h1 className='display-4'>See current issues!</h1>
+                    <h1 className='display-4'>See recent issues!</h1>
                 </div>
                 {/* Current Issues */}
                 <div className="row mt-2 g-3">

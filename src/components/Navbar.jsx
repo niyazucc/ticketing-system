@@ -6,7 +6,7 @@ export default function Navbar() {
   const {user} = useAuth(); // Replace with actual login check
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary py-3">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary py-3 shadow">
       <div className="container">
         <a className="navbar-brand fw-bold" href="/">
           Ticketing System.

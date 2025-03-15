@@ -13,4 +13,3 @@ const ProtectedRoute = ({ children }) => {
 };
 
 export default ProtectedRoute;
-// This component is a wrapper around the children components. It checks if the user is logged in. If the user is not logged in, it redirects to the unauthorized page. If the user is logged in, it renders the children components.
