@@ -20,7 +20,10 @@ export default function UserDashboard() {
             {/* Quick Stats */}
             <div className="border rounded shadow-sm p-3">
                 <div className="row g-3">
-                    <h4>Overview</h4>
+                    <div>
+                        <h4>Overview</h4>
+                        <p className="text-muted">Here’s a summary of your tickets.</p>
+                    </div>
                     <div className="col-md-3">
                         <div className="card bg-outline-primary p-3 shadow-none">
                             <h5>Total Tickets</h5>
@@ -51,7 +54,7 @@ export default function UserDashboard() {
             {/* Ticket List */}
             <div className="mt-3 border rounded shadow-sm p-3 ">
                 <h4>My Tickets</h4>
-
+                <p className="text-muted">Here are your most recent ticket submissions.</p>
                 {tickets.length === 0 ? (
                     <>
                         <div className="text-center">
@@ -61,43 +64,50 @@ export default function UserDashboard() {
                             <p className="text-muted">No tickets available</p>
 
                         </div>
+
                     </>
 
                 ) : (
-                    <table className="table mt-3 px-4">
-                        <thead>
-                            <tr>
-                                <th>Ticket ID</th>
-                                <th>Title</th>
-                                <th>Category</th>
-                                <th>Location</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {tickets.map((t) => (
-                                <tr key={t.id}>
-                                    <td>{t.id}</td>
-                                    <td>{t.title}</td>
-                                    <td>{t.category}</td>
-                                    <td>{t.location ? `${t.location.lat.toFixed(5)}, ${t.location.lng.toFixed(5)}` : "No location"}</td>
 
-                                    <td>{t.date}</td>
-                                    <td>
-                                        <span className={`badge ${t.status === "Open" ? "bg-success" :
+                    <div className="table-responsive">
+                        <table className="table mt-3 px-4">
+                            <thead>
+                                <tr>
+                                    <th>Ticket ID</th>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Location</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {tickets.slice(0, 5).map((t) => (
+                                    <tr key={t.id}>
+                                        <td>{t.id}</td>
+                                        <td>{t.title}</td>
+                                        <td>{t.category}</td>
+                                        <td>{t.location ? `${t.location.lat.toFixed(5)}, ${t.location.lng.toFixed(5)}` : "No location"}</td>
+                                        <td>{t.date}</td>
+                                        <td>
+                                            <span className={`badge ${t.status === "Open" ? "bg-success" :
                                                 t.status === "In Progress" ? "bg-warning text-dark" :
                                                     t.status === "Resolved" ? "bg-primary" :
-                                                        t.status === "Closed" ? "bg-danger" :
-                                                            "bg-secondary" // Default case
-                                            }`}>
-                                            {t.status}
-                                        </span>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                                                        t.status === "Closed" ? "bg-danger" : "bg-secondary"
+                                                }`}>
+                                                {t.status}
+                                            </span>
+                                        </td>
+
+                                    </tr>
+                                ))}
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
                 )}
             </div>
         </>

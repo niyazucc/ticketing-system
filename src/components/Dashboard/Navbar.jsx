@@ -18,7 +18,7 @@ export default function Navbar() {
             Ticketing System.
           </a>
 
-          <NotificationBell />
+          <NotificationBell role={user.role === 'admin' ? 'admin' : user.role === 'user' ? 'user' : 'handler'} />
           <button
             className="navbar-toggler"
             type="button"

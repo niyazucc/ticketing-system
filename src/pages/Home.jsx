@@ -15,7 +15,7 @@ export default function Home() {
                 {/* Header Section */}
                 <div className="row g-4 align-items-center">
                     {/* Left Column: Text Content */}
-                    <HeroSection/>
+                    <HeroSection />
 
                     {/* Right Column: Map (Moves Below When Screen is Small) */}
                     <div className="col-lg-6">
@@ -37,29 +37,35 @@ export default function Home() {
                 <div className='text-center mt-5'>
                     <h1 className='display-4'>How it works?</h1>
                 </div>
+
                 {/* Features Section */}
                 <div className="row mt-2 mb-5 g-3">
                     <div className="col-md-4">
-                        <div className="card shadow-sm p-4">
-                            <h3>📝 Report an Issue</h3>
-                            <p>Fill out a form to describe the problem and select the location.</p>
+                        <div className="card shadow-sm p-4 text-center">
+                            <img src="/images/submit.png" alt="Report an Issue" className="img-fluid mb-3"  />
+                            <h5>📝 Report an Issue</h5>
+                            <p className='text-muted'>Submit a report with details and location. Your issue is logged into the system.</p>
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <div className="card shadow-sm p-4">
-                            <h3>📍 View on Map</h3>
-                            <p>See reported issues on a map with real-time updates.</p>
+                        <div className="card shadow-sm p-4 text-center">
+                            <img src="/images/report.png" alt="Admin Reviews" className="img-fluid mb-3"  />
+                            <h5>👨‍💻 Admin & Handlers Review</h5>
+                            <p className='text-muted'>Admins and handlers verify the issue and assign it to the right team for action.</p>
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <div className="card shadow-sm p-4">
-                            <h3>✅ Get Updates</h3>
-                            <p>Track the progress of your report until it's resolved.</p>
+                        <div className="card shadow-sm p-4 text-center">
+                            <img src="/images/completed.png" alt="Problem Resolved" className="img-fluid mb-3"  />
+                            <h5>✅ Problem Resolved!</h5>
+                            <p className='text-muted'>The issue is fixed, and you receive an update on the resolution status.</p>
                         </div>
                     </div>
                 </div>
+
+
             </div>
-            
+
         </>
     )
 }

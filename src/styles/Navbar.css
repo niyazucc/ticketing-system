@@ -50,3 +50,8 @@
   background-color: #263238 !important;
   color: white !important; /* Ensures contrast on hover */
 }
+
+.carousel-control-prev-icon, 
+.carousel-control-next-icon {
+    filter: invert(0) grayscale(100); /* Makes it black */
+}

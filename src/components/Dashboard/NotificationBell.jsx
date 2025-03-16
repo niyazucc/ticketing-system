@@ -1,26 +1,45 @@
 import React, { useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
+
+
+export function addNotification(role, message) {
+  const storageKey = `notifications_${role}`;
+  const storedNotifications = JSON.parse(localStorage.getItem(storageKey)) || [];
+
+  storedNotifications.push({ message });
+  localStorage.setItem(storageKey, JSON.stringify(storedNotifications));
+}
+
 
 export default function NotificationBell() {
   const [notifications, setNotifications] = useState([]);
+  const { user } = useAuth();
+  // Get the correct storage key based on role
+  const storageKey = `notifications_${user.role}`;
+
+  
 
   useEffect(() => {
-    const storedNotifications = JSON.parse(localStorage.getItem("notifications")) || [];
+    if (!user.role) return; // Ensure role is provided
+
+    // Retrieve notifications based on role
+    const storedNotifications = JSON.parse(localStorage.getItem(storageKey)) || [];
     setNotifications(storedNotifications);
-  }, []);
+  }, [user.role]);
 
   useEffect(() => {
     const checkNewTicket = () => {
-      const storedNotifications = JSON.parse(localStorage.getItem("notifications")) || [];
+      const storedNotifications = JSON.parse(localStorage.getItem(storageKey)) || [];
       setNotifications(storedNotifications);
     };
 
     window.addEventListener("storage", checkNewTicket);
     return () => window.removeEventListener("storage", checkNewTicket);
-  }, []);
+  }, [user.role]);
 
   const clearNotifications = () => {
     setNotifications([]);
-    localStorage.setItem("notifications", JSON.stringify([]));
+    localStorage.setItem(storageKey, JSON.stringify([]));
   };
 
   return (

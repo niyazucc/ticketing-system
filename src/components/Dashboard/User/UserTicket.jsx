@@ -2,10 +2,15 @@ import React, { useState, useEffect } from "react";
 import Map, { Marker } from "react-map-gl/mapbox";
 import { toast } from "react-toastify";
 import DeleteModal from "../../../components/DeleteModal";
+import { addNotification } from "../../../components/Dashboard/NotificationBell";
+import { useNavigate } from "react-router-dom";
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 export default function TicketList() {
+
+    const navigate = useNavigate();
+
     const [selectedTicket, setSelectedTicket] = useState(null);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [tickets, setTickets] = useState([]);
@@ -47,7 +52,7 @@ export default function TicketList() {
 
         // Save new ticket
         const newTicket = {
-            id: tickets.length + 1,
+            id: tickets.length + 2,
             ...ticket,
             status: "Open",
         };
@@ -65,74 +70,82 @@ export default function TicketList() {
             date: new Date().toLocaleDateString("en-GB"), // Reset with new date
         });
 
-        // Add notification to localStorage
-        const notifications = JSON.parse(localStorage.getItem("notifications")) || [];
-        notifications.push({ message: `New ticket added: ${newTicket.title}` });
-        localStorage.setItem("notifications", JSON.stringify(notifications));
+        // Add notification to Admin
 
-        
+        addNotification("admin", "A new ticket needs has been submitted.");
+
         setShowModal(false);
         toast.success("Ticket created successfully");
     };
 
     return (
-        <div className="mt-3 border rounded shadow-sm p-3">
-            <div className="d-flex justify-content-between">
-                <h4>My Tickets</h4>
-                <button className="btn bg-primary text-white" onClick={() => setShowModal(true)}>
+        <div className="border rounded shadow-sm p-3">
+            <div className="d-flex justify-content-between align-items-center">
+                <div>
+                    <h4>My Tickets</h4>
+                    <p className="text-muted">Here’s a summary of your tickets.</p>
+                </div>
+
+                <button className="btn btn-sm bg-primary text-white d-flex align-items-center gap-1" onClick={() => setShowModal(true)}>
                     <i className="bi bi-plus"></i> Create Ticket
                 </button>
             </div>
 
 
+
             {/* Display Tickets */}
             {tickets.length > 0 ? (
-                <table className="table mt-3 px-4">
-                    <thead>
-                        <tr>
-                            <th>Ticket ID</th>
-                            <th>Title</th>
-                            <th>Category</th>
-                            <th>Location</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                <div className="table-responsive">
+                    <table className="table mt-3 px-4">
+                        <thead>
+                            <tr>
+                                <th>Ticket ID</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Location</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {tickets.map((t) => (
-                            <tr key={t.id}>
-                                <td>{t.id}</td>
-                                <td>{t.title}</td>
-                                <td>{t.category}</td>
-                                <td>{t.location ? `${t.location.lat.toFixed(5)}, ${t.location.lng.toFixed(5)}` : "No location"}</td>
-
-                                <td>{t.date}</td>
-                                <td>
-                                    <span className={`badge ${t.status === "Open" ? "bg-success" :
-                                        t.status === "In Progress" ? "bg-warning text-dark" :
-                                            t.status === "Resolved" ? "bg-primary" :
-                                                t.status === "Closed" ? "bg-danger" :
-                                                    "bg-secondary" // Default case
-                                        }`}>
-                                        {t.status}
-                                    </span>
-                                </td>
-                                <td>
-                                    <button className="btn btn-sm bg-primary text-white"><i className="bi bi-eye"></i></button>
-                                    <button className="btn btn-sm btn-danger"
-                                        onClick={() => {
-                                            setSelectedTicket(t.id);
-                                            setShowDeleteModal(true);
-                                        }}>
-                                        <i className="bi bi-trash"></i>
-                                    </button>
-                                </td>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {tickets.map((t) => (
+                                <tr key={t.id}>
+                                    <td>{t.id}</td>
+                                    <td>{t.title}</td>
+                                    <td>{t.category}</td>
+                                    <td>{t.location ? `${t.location.lat.toFixed(5)}, ${t.location.lng.toFixed(5)}` : "No location"}</td>
+
+                                    <td>{t.date}</td>
+                                    <td>
+                                        <span className={`badge ${t.status === "Open" ? "bg-success" :
+                                            t.status === "In Progress" ? "bg-warning text-dark" :
+                                                t.status === "Resolved" ? "bg-primary" :
+                                                    t.status === "Closed" ? "bg-danger" :
+                                                        "bg-secondary" // Default case
+                                            }`}>
+                                            {t.status}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button className="btn btn-sm bg-primary text-white"
+                                            onClick={() => navigate(`/tickets/${t.id}`)}>
+                                            <i className="bi bi-eye"></i>
+                                        </button>
+                                        <button className="btn btn-sm btn-danger"
+                                            onClick={() => {
+                                                setSelectedTicket(t.id);
+                                                setShowDeleteModal(true);
+                                            }}>
+                                            <i className="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             ) : (
                 <div className="text-center mt-3">
                     <img src="/images/empty.png" className="w-25" alt="No Tickets" />

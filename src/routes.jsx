@@ -8,6 +8,7 @@ import Unauthorized from './pages/Unauthorized';
 import ProtectedRoute from './components/ProtectedRoute';
 import DashboardLayout from './layout/DashboardLayout';
 import Tickets from './pages/Tickets';
+import TicketDetails from './pages/TicketDetails';
 
 const AppRoutes = () => {
     return (
@@ -20,6 +21,7 @@ const AppRoutes = () => {
         {/* Protected route */} 
         <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout><Dashboard /></DashboardLayout></ProtectedRoute>} />
         <Route path="/tickets" element={<ProtectedRoute><DashboardLayout><Tickets /></DashboardLayout></ProtectedRoute>} />
+        <Route path="/tickets/:id" element={<ProtectedRoute><DashboardLayout><TicketDetails /></DashboardLayout></ProtectedRoute>} />
 
       </Routes>
     );
