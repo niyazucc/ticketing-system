@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
-
+import users from '../data/users';
 
 export default function Login() {
   const { login } = useAuth(); // ✅ Use login function from context
@@ -10,10 +10,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // ✅ Show error below input
 
-  const users = [
-    { username: "user@gmail.com", password: "user", role: "user" },
-    { username: "admin@gmail.com", password: "admin", role: "admin" }
-  ];
+  
   const handleLogin = (e) => {
     e.preventDefault();
     const user = users.find((u) => u.username === username && u.password === password);

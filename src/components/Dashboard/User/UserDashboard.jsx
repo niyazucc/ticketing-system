@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
+import TicketTables from '../TicketTables';
+import { useAuth } from '../../../context/AuthContext';
 
 export default function UserDashboard() {
     const [tickets, setTickets] = useState([]);
+    const { user } = useAuth(); // Assuming useAuth() returns an object with `user`
 
     useEffect(() => {
         // Get tickets from localStorage (or empty array if none exist)
@@ -9,11 +12,16 @@ export default function UserDashboard() {
         setTickets(storedTickets);
     }, []);
 
-    // Categorize tickets
-    const totalTickets = tickets.length;
-    const openTickets = tickets.filter(ticket => ticket.status === "Open").length;
-    const pendingTickets = tickets.filter(ticket => ticket.status === "Pending").length;
-    const resolvedTickets = tickets.filter(ticket => ticket.status === "Resolved").length;
+    // Apply filtering only if the user is a handler
+    const filteredTickets = user.role === "handler"
+        ? tickets.filter(t => t.assignedHandler === user.username)
+        : tickets;
+
+    // Categorize tickets (using filteredTickets instead of tickets)
+    const totalTickets = filteredTickets.length;
+    const openTickets = filteredTickets.filter(ticket => ticket.status === "Open").length;
+    const pendingTickets = filteredTickets.filter(ticket => ticket.status === "In Progress").length;
+    const resolvedTickets = filteredTickets.filter(ticket => ticket.status === "Resolved").length;
 
     return (
         <>
@@ -22,7 +30,7 @@ export default function UserDashboard() {
                 <div className="row g-3">
                     <div>
                         <h4>Overview</h4>
-                        <p className="text-muted">Here’s a summary of your tickets.</p>
+                        <p className="text-muted">{user.role ==='user' ? 'Here’s a summary of your tickets.' : 'Here’s a summary of tickets assigned to you.' }</p>
                     </div>
                     <div className="col-md-3">
                         <div className="card bg-outline-primary p-3 shadow-none">
@@ -38,7 +46,7 @@ export default function UserDashboard() {
                     </div>
                     <div className="col-md-3">
                         <div className="card bg-outline-primary p-3 shadow-none">
-                            <h5>Pending Tickets</h5>
+                            <h5>In Progress Tickets</h5>
                             <h3>{pendingTickets}</h3>
                         </div>
                     </div>
@@ -51,65 +59,8 @@ export default function UserDashboard() {
                 </div>
             </div>
 
-            {/* Ticket List */}
-            <div className="mt-3 border rounded shadow-sm p-3 ">
-                <h4>My Tickets</h4>
-                <p className="text-muted">Here are your most recent ticket submissions.</p>
-                {tickets.length === 0 ? (
-                    <>
-                        <div className="text-center">
-                            <div className="img-fluid">
-                                <img src="/images/empty.png" className='w-25' alt="No Tickets" />
-                            </div>
-                            <p className="text-muted">No tickets available</p>
+            <TicketTables tickets={tickets} />
 
-                        </div>
-
-                    </>
-
-                ) : (
-
-                    <div className="table-responsive">
-                        <table className="table mt-3 px-4">
-                            <thead>
-                                <tr>
-                                    <th>Ticket ID</th>
-                                    <th>Title</th>
-                                    <th>Category</th>
-                                    <th>Location</th>
-                                    <th>Date</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {tickets.slice(0, 5).map((t) => (
-                                    <tr key={t.id}>
-                                        <td>{t.id}</td>
-                                        <td>{t.title}</td>
-                                        <td>{t.category}</td>
-                                        <td>{t.location ? `${t.location.lat.toFixed(5)}, ${t.location.lng.toFixed(5)}` : "No location"}</td>
-                                        <td>{t.date}</td>
-                                        <td>
-                                            <span className={`badge ${t.status === "Open" ? "bg-success" :
-                                                t.status === "In Progress" ? "bg-warning text-dark" :
-                                                    t.status === "Resolved" ? "bg-primary" :
-                                                        t.status === "Closed" ? "bg-danger" : "bg-secondary"
-                                                }`}>
-                                                {t.status}
-                                            </span>
-                                        </td>
-
-                                    </tr>
-                                ))}
-
-                            </tbody>
-                        </table>
-                    </div>
-
-
-
-                )}
-            </div>
         </>
     );
 }

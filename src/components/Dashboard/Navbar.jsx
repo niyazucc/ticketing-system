@@ -45,7 +45,7 @@ export default function Navbar() {
                   </li>
                   <li className={`nav-item ${location.pathname === "/tickets" ? "border-bottom border-white" : ""}`}>
                     <Link className="nav-link" to="/tickets">
-                      <i className="bi bi-ticket-detailed"></i> {user.role === "admin" ? "All Tickets" : "My Tickets"}
+                      <i className="bi bi-ticket-detailed"></i> {(user.role === "admin" || user.role === "handler") ? "All Tickets" :  "My Tickets"}
                     </Link>
                   </li>
                 </ul>
