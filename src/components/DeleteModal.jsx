@@ -1,4 +1,4 @@
-export default function DeleteModal({ show, ticket, onClose, onDelete, isReject }) {
+export default function DeleteModal({ show, ticket, onClose, onDelete }) {
     if (!show) return null; // Prevent rendering if not shown
 
     return (

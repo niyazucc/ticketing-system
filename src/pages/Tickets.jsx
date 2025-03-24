@@ -118,11 +118,11 @@ export default function Tickets() {
 
                   <td>{t.date}</td>
                   <td>
-                    <span className={`badge ${t.status === "Open" ? "bg-success" :
-                      t.status === "In Progress" ? "bg-warning text-dark" :
-                        t.status === "Resolved" ? "bg-primary" :
-                          t.status === "Closed" ? "bg-danger" :
-                            "bg-secondary" // Default case
+                    <span className={`badge ${t.status === "Open" ? "text-bg-info" :
+                      t.status === "In Progress" ? "text-bg-warning" :
+                        t.status === "Resolved" ? "text-bg-success" :
+                          t.status === "Closed" ? "text-bg-secondary" :
+                            "text-bg-danger" // Default case
                       }`}>
                       {t.status}
                     </span>

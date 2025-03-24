@@ -13,9 +13,9 @@ export default function TicketTables({ tickets }) {
 
     return (
         <div className="mt-3 border rounded shadow-sm p-3">
-            
+
             <h4>{user.role === 'admin' ? 'Recent Tickets' : 'My Tickets'}</h4>
-            <p className="text-muted">{user.role === 'admin' ? 'Here are recent tickets that were submitted.' :  user.role ==='handler' ? 'Here’s a list of all tickets.' :'Here are your most recent ticket submissions.'}</p>
+            <p className="text-muted">{user.role === 'admin' ? 'Here are recent tickets that were submitted.' : user.role === 'handler' ? 'Here’s a list of all tickets.' : 'Here are your most recent ticket submissions.'}</p>
             {tickets.length === 0 ? <div className="text-center mt-3">
                 <img src="/images/empty.png" className="w-25" alt="No Tickets" />
                 <p className="text-muted">No tickets available</p>
@@ -41,10 +41,11 @@ export default function TicketTables({ tickets }) {
                                     <td>{t.location ? `${t.location.lat.toFixed(5)}, ${t.location.lng.toFixed(5)}` : "No location"}</td>
                                     <td>{t.date}</td>
                                     <td>
-                                        <span className={`badge ${t.status === "Open" ? "bg-success" :
-                                            t.status === "In Progress" ? "bg-warning text-dark" :
-                                                t.status === "Resolved" ? "bg-primary" :
-                                                    t.status === "Closed" ? "bg-danger" : "bg-secondary"
+                                        <span className={`badge ${t.status === "Open" ? "text-bg-info" :
+                                            t.status === "In Progress" ? "text-bg-warning" :
+                                                t.status === "Resolved" ? "text-bg-success" :
+                                                    t.status === "Closed" ? "text-bg-secondary" :
+                                                        "text-bg-danger" // Default case
                                             }`}>
                                             {t.status}
                                         </span>

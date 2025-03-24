@@ -2,6 +2,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import MapComponent from "../components/Map";
 import DeleteModal from "../components/DeleteModal";
+import RejectModal from "../components/RejectModal";
+import ResolveModal from "../components/ResolveModal";
+import CloseTicketModal from "../components/CloseTicketModal";
 import { useAuth } from "../context/AuthContext";
 import users from "../data/users";
 import { toast } from "react-toastify";
@@ -23,8 +26,40 @@ export default function TicketDetails() {
     const [selectedTicket, setSelectedTicket] = useState(null);
     const [isUpdate, setIsUpdate] = useState(false);
 
-    const [showModal, setShowModal] = useState(false);
-    const [handlerNotes, setHandlerNotes] = useState("");
+    const [showRejectModal, setShowRejectModal] = useState(false);
+    const [rejectNotes, setRejectNotes] = useState("");
+
+    const [showResolveModal, setShowResolveModal] = useState(false);
+    const [resolveNotes, setResolveNotes] = useState("");
+
+    const [showCloseModal, setShowCloseModal] = useState(false);
+
+    const openResolveModal = () => {
+        setResolveNotes(""); // Reset notes when opening
+        setShowResolveModal(true);
+    };
+
+    const handleCloseTicket = () => {
+        const updatedTicket = { ...ticket, status: "Closed" };
+        tickets[ticketIndex] = updatedTicket;
+        localStorage.setItem("tickets", JSON.stringify(tickets));
+        setTicket(updatedTicket);
+        addNotification("handler", "A ticket has been confirmed and closed.");
+        addNotification("user", "Your submitted has been solved and closed.");
+        toast.success("Ticket closed.");
+        setShowCloseModal(false);
+    };
+
+    const handleResolve = () => {
+        const updatedTicket = { ...ticket, status: "Resolved", resolveNotes: resolveNotes };
+        tickets[ticketIndex] = updatedTicket;
+        localStorage.setItem("tickets", JSON.stringify(tickets));
+        setTicket(updatedTicket);
+        addNotification("admin", "A ticket has been resolved.");
+        toast.success("Ticket resolved.");
+        setShowResolveModal(false);
+        setResolveNotes(""); // Clear notes after resolving
+    };
 
     const handleChange = (e) => {
         setTicket({ ...ticket, [e.target.name]: e.target.value, });
@@ -38,20 +73,22 @@ export default function TicketDetails() {
     };
 
     const handleReject = () => {
-        const updatedTicket = { ...ticket, status: "Rejected", notes };
+        const updatedTicket = { ...ticket, assignedHandler: null, status: "Rejected", notes: rejectNotes };
         tickets[ticketIndex] = updatedTicket;
         localStorage.setItem("tickets", JSON.stringify(tickets));
         setTicket(updatedTicket);
         addNotification("admin", "A ticket has been rejected.");
         toast.error("Ticket rejected.");
-        setShowModal(false); 
+        setShowRejectModal(false);
+        navigate("/tickets");
+        setRejectNotes(""); // Clear notes after rejection
     };
 
     const handleDelete = () => {
         const updatedTickets = tickets.filter(t => t.id !== parseInt(id));
         localStorage.setItem("tickets", JSON.stringify(updatedTickets));
         setShowDeleteModal(false);
-        navigate("/");
+        navigate("/tickets");
     };
 
     // Function to assign a handler to the ticket
@@ -68,6 +105,7 @@ export default function TicketDetails() {
         setTicket(updatedTicket);
     };
 
+    console.log("Ticket Details:", ticket);
     return (
         <div className="border rounded shadow-sm p-3">
             <div className="row">
@@ -135,15 +173,32 @@ export default function TicketDetails() {
                         <div className="mb-2">
                             <label className="form-label"><strong>Status:</strong></label>
                             <br />
-                            <span className={`badge bg-${ticket.status === "Open" ? "success" :
-                                ticket.status === "In Progress" ? "warning text-dark" :
-                                    ticket.status === "Resolved" ? "primary" :
+                            <span className={`badge text-bg-${ticket.status === "Open" ? "info" :
+                                ticket.status === "In Progress" ? "warning" :
+                                    ticket.status === "Resolved" ? "success" :
                                         ticket.status === "Closed" ? "secondary" :
-                                            ticket.status === "Rejected" ? "danger" :
-                                                "bg-secondary"} ms-2`}>
+                                            "danger"} ms-2`}>
                                 {ticket.status}
                             </span>
                         </div>
+
+                        {user.role === "admin" && ticket.status === "Rejected" && (
+                            <div className="mb-2">
+                                <label className="form-label"><strong>Reason Reject:</strong></label>
+                                <div class="alert alert-danger" role="alert">
+                                    {ticket.notes}
+                                </div>
+                            </div>
+                        )}
+
+                        {user.role === "admin" && ticket.status === "Resolved" && (
+                            <div className="mb-2">
+                                <label className="form-label"><strong>Resolved Notes:</strong></label>
+                                <div class="alert alert-success" role="alert">
+                                    {ticket.resolveNotes}
+                                </div>
+                            </div>
+                        )}
 
                         <div className="mb-2">
                             <label className="form-label"><strong>Handler:</strong></label>
@@ -152,7 +207,6 @@ export default function TicketDetails() {
 
                         {user.role === "admin" && (isAssigning ? (
                             <>
-
                                 <label className="form-label"><strong>Assign to Handler:</strong></label>
                                 <select
                                     className="form-select"
@@ -189,12 +243,25 @@ export default function TicketDetails() {
                                 >
                                     Confirm
                                 </button>
+                                <button
+                                    onClick={() => setIsAssigning(false)}
+                                    class="btn btn-outline-dark mt-2 ms-2"
+                                >
+                                    Cancel
+                                </button>
+
                             </>
                         ) : (<>
-                            <button className="btn bg-primary text-white mt-2" onClick={() => setIsAssigning(true)}>Assign Handler</button>
+
+                            {ticket.status !== "Closed" && (
+                                <button className="btn bg-primary text-white mt-2" onClick={() => setIsAssigning(true)}>Assign Handler</button>
+                            )}
+                            {ticket.status === "Resolved" && (
+                                <button className="btn btn-success mt-2 ms-2" onClick={() => setShowCloseModal(true)}>Close Ticket</button>
+                            )}
                         </>))}
 
-                        {user.role === "handler" && ticket.assignedHandler === user.username && (
+                        {user.role === "handler" && ticket.status !== "Closed" && (
                             <>
                                 <div className="mb-2">
                                     <label className="form-label"><strong>Notes:</strong></label>
@@ -204,28 +271,17 @@ export default function TicketDetails() {
                                 <div className="mb-2">
                                     <button
                                         type="button"
-                                        class="btn btn-success me-2"
-                                        onClick={() => {
-                                            const updatedTicket = { ...ticket, status: "Resolved" };
-                                            tickets[ticketIndex] = updatedTicket;
-                                            localStorage.setItem("tickets", JSON.stringify(tickets));
-                                            setTicket(updatedTicket);
-                                            addNotification('admin', `A ticket has been resolved.`);
-                                            toast.success("Ticket resolved successfully.");
-                                        }}
+                                        className="btn btn-success me-2"
+                                        onClick={openResolveModal}
                                     >
                                         Resolve
                                     </button>
                                     <button
                                         type="button"
-                                        class="btn btn-danger me-2"
+                                        className="btn btn-danger me-2"
                                         onClick={() => {
-                                            const updatedTicket = { ...ticket, status: "Rejected", notes: notes };
-                                            tickets[ticketIndex] = updatedTicket;
-                                            localStorage.setItem("tickets", JSON.stringify(tickets));
-                                            setTicket(updatedTicket);
-                                            addNotification('admin', `A ticket has been rejected.`);
-                                            toast.error("Ticket rejected.");
+                                            setSelectedTicket(ticket);
+                                            setShowRejectModal(true);
                                         }}
                                     >
                                         Reject
@@ -235,19 +291,30 @@ export default function TicketDetails() {
 
                         )}
 
-                        {user.role === "user" && (isEditing ? (
-                            <button className="btn btn-success mt-2" onClick={handleSave}>Save</button>
-                        ) : (
-                            <button className="btn btn-primary mt-2" onClick={() => { setIsEditing(true); setIsUpdate(true); }}>Edit</button>
-                        ))}
+                        {ticket.status !== "Closed" && (
+                            <>
+                                {user.role === "user" && (
+                                    isEditing ? (
+                                        <button className="btn btn-success mt-2" onClick={handleSave}>Save</button>
+                                    ) : (
+                                        <button className="btn btn-primary mt-2" onClick={() => { setIsEditing(true); setIsUpdate(true); }}>
+                                            Edit
+                                        </button>
+                                    )
+                                )}
 
-                        {user.role === "user" && (
-                            <button className="btn btn-danger mt-2 ms-2" onClick={() => {
-                                setSelectedTicket(ticket);
-                                console.log("Opening Delete Modal...");
-                                setShowDeleteModal(true);
-                            }}>Delete</button>
+                                {user.role === "user" && (
+                                    <button className="btn btn-danger mt-2 ms-2" onClick={() => {
+                                        setSelectedTicket(ticket);
+                                        console.log("Opening Delete Modal...");
+                                        setShowDeleteModal(true);
+                                    }}>
+                                        Delete
+                                    </button>
+                                )}
+                            </>
                         )}
+
                     </div>
                 </div>
                 <div className="col-lg-6 mt-lg-0 mt-3">
@@ -262,6 +329,34 @@ export default function TicketDetails() {
                     ticket={selectedTicket}
                     onClose={() => setShowDeleteModal(false)}
                     onDelete={handleDelete}
+                />
+            )}
+
+            {showRejectModal && (
+                <RejectModal
+                    show={showRejectModal}
+                    ticket={ticket}
+                    notes={rejectNotes}
+                    setNotes={setRejectNotes}
+                    onClose={() => setShowRejectModal(false)}
+                    onReject={handleReject}
+                />
+            )}
+            {showResolveModal && (
+                <ResolveModal
+                    show={showResolveModal}
+                    ticket={ticket}
+                    notes={resolveNotes}
+                    setResolveNotes={setResolveNotes}
+                    onClose={() => setShowResolveModal(false)}
+                    onResolve={handleResolve}
+                />
+            )}
+            {showCloseModal && (
+                <CloseTicketModal
+                    show={showCloseModal}
+                    onClose={() => setShowCloseModal(false)}
+                    onConfirm={handleCloseTicket}
                 />
             )}
         </div>
