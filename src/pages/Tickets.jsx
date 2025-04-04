@@ -10,7 +10,6 @@ import { useAuth } from "../context/AuthContext";
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 export default function Tickets() {
-
   const { user } = useAuth();
   const [viewport, setViewport] = useState({
     latitude: 3.139,
@@ -20,7 +19,10 @@ export default function Tickets() {
   const navigate = useNavigate();
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [tickets, setTickets] = useState(JSON.parse(localStorage.getItem("tickets")) || []); const [showModal, setShowModal] = useState(false);
+  const [sortBy, setSortBy] = useState(null);
+  const [ascending, setAscending] = useState(true);
+  const [tickets, setTickets] = useState(JSON.parse(localStorage.getItem("tickets")) || []);
+  const [showModal, setShowModal] = useState(false);
   const [ticket, setTicket] = useState({
     title: "",
     category: "",
@@ -29,10 +31,31 @@ export default function Tickets() {
     date: new Date().toLocaleDateString("en-GB"),
   });
 
-  const filteredTickets = user.role === "handler"
-    ? tickets.filter(t => t.assignedHandler === user.username)
-    : tickets;
+  const [filteredTickets, setFilteredTickets] = useState([]);
 
+  useEffect(() => {
+    setFilteredTickets(user.role === "handler"
+      ? tickets.filter(t => t.assignedHandler === user.username)
+      : tickets);
+  }, [tickets, user]);
+
+  const handleSort = (criteria) => {
+    setSortBy(criteria);
+    setAscending(prev => !prev); // Toggle sorting order
+
+    setFilteredTickets(prevFiltered => [...prevFiltered].sort((a, b) => {
+      if (criteria === "date") {
+        // Ensure the date format is properly parsed
+        const dateA = new Date(a.date.split("/").reverse().join("-")); // Converts "dd/MM/yyyy" to "yyyy-MM-dd"
+        const dateB = new Date(b.date.split("/").reverse().join("-"));
+        return ascending ? dateA - dateB : dateB - dateA;
+      }
+      if (criteria === "status") {
+        return ascending ? a.status.localeCompare(b.status) : b.status.localeCompare(a.status);
+      }
+      return 0;
+    }));
+  };
 
   useEffect(() => {
     setTickets(getTickets());
@@ -55,8 +78,6 @@ export default function Tickets() {
     setSelectedTicket(null);
     toast.success("Ticket deleted successfully");
   };
-
-
 
   const handleCreateTicket = () => {
     if (!ticket.title || !ticket.category || !ticket.description || !ticket.location.lat) {
@@ -93,6 +114,24 @@ export default function Tickets() {
         )}
       </div>
 
+      <div className="dropdown">
+        <button className="btn bg-primary text-white dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i className="bi bi-funnel"></i> Sort By
+        </button>
+        <ul className="dropdown-menu">
+          <li>
+            <button className="dropdown-item" onClick={() => handleSort("date")}>
+              Date {sortBy === "date" ? (ascending ? "▲" : "▼") : ""}
+            </button>
+          </li>
+          <li>
+            <button className="dropdown-item" onClick={() => handleSort("status")}>
+              Status {sortBy === "status" ? (ascending ? "▲" : "▼") : ""}
+            </button>
+          </li>
+
+        </ul>
+      </div>
       {/* Display Tickets */}
       {filteredTickets.length > 0 ? (
         <div className="table-responsive">

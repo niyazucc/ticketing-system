@@ -33,6 +33,13 @@ const tickets = [
         description: "Water leaking from a pipe near the park",
         location: { lat: 3.160, lng: 101.700 },
         status: 'Closed'
+    },
+    {
+        id: 6,
+        title: "Fallen Tree",
+        description: "A tree has fallen and is blocking the road",
+        location: { lat: 3.165, lng: 101.705 },
+        status: 'Open'
     }
 ];
 

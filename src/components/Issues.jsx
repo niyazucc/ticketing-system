@@ -25,7 +25,7 @@ export default function Issues() {
                 <div className="carousel-inner">
                     {ticketChunks.map((group, index) => (
                         <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
-                            <div className="row">
+                            <div className="row gap-2">
                                 {group.map((issue) => (
                                     <div key={issue.id} className="col-md-4">
                                         <div className="card shadow-sm p-3 text-center">
